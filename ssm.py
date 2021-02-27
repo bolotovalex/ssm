@@ -1,14 +1,8 @@
 # This is a sample Python script.
-import getpass
 import check_platform as ck
 import password
-import prettytable
-import make_table
 import io_file
-import menu
-import encode
-
-list_decode = [{'host': 'csys.su', 'port': '22', 'user': 'ilexx', 'key': 'key.ppk', 'comment': 'comment'},{'host': '1.su', 'port': '2022', 'user': '234', 'key': 'key2.ppk', 'comment': 'comment2'}]
+import make_table
 
 if __name__ == '__main__':
     check_platform = ck.check_platform()
@@ -25,15 +19,12 @@ if __name__ == '__main__':
             password = password.create_password(path_to_file, clear)
         else:
             password = password.check_password(path_to_file, clear)
+    list_decode = io_file.load_file(path_to_file, password)
 
     while True:
-        #lst = io_file.load_file(path_to_file, password)
-        #io_file.load_file(path_to_file, password)
-        #io_file.save_file(path_to_file, list_decode, password)
-        #menu.main_menu()
-        print(io_file.load_file(path_to_file, password))
-        input('p')
-        pass
+        #make_table.make_table_from_list(list_decode, clear)
+        #make_table.make_table_from_line(list_decode[0], clear)
+        exit()
 
 
 
