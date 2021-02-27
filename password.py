@@ -23,7 +23,9 @@ def create_password(path_to_file, clear):
             ch = input('Continue?: ')
             if ch == 'y' or ch == 'Y':
                 with open(path_to_file, 'w') as f:
-                    f.write(encode.encode(password, password))
+                    f.write(f"{encode.encode(password, password)}\n")
+                    f.write(f"[\n")
+                    f.write(f"]\n")
                     f.close()
     return password
 
@@ -32,12 +34,13 @@ def check_password(path_to_file, clear):
     password = getpass.getpass('Enter master password: ')
     with open(path_to_file, 'r') as f:
         pass_in_file = f.readline()
-        if pass_in_file == encode.encode(password, password):
-            return password
-        else:
-            system(clear)
-            print('Wrong')
-            exit()
+        f.close()
+    if pass_in_file.rstrip() == encode.encode(password, password):
+        return password
+    else:
+        system(clear)
+        print('Wrong')
+        exit()
 
 
 

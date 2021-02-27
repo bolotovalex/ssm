@@ -1,14 +1,16 @@
 import base64
-def encode(key, clear):
+def encode(key, str):
     enc = []
-    for i in range(len(clear)):
+    enc.clear()
+    for i in range(len(str)):
         key_c = key[i % len(key)]
-        enc_c = chr((ord(clear[i]) + ord(key_c)) % 256)
+        enc_c = chr((ord(str[i]) + ord(key_c)) % 256)
         enc.append(enc_c)
     return base64.urlsafe_b64encode("".join(enc).encode()).decode()
 
 def decode(key, enc):
     dec = []
+    dec.clear()
     enc = base64.urlsafe_b64decode(enc).decode()
     for i in range(len(enc)):
         key_c = key[i % len(key)]
