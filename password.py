@@ -37,7 +37,6 @@ def check_password(path_to_file, clear):
         else:
             system(clear)
             print('Wrong')
-            input()
             exit()
 
 

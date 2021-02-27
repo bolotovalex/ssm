@@ -20,6 +20,8 @@ if __name__ == '__main__':
         if len(pass_in_file) < 8:
             password.create_password(path_to_file, clear)
         else:
-            password.check_password(path_to_file, clear)
+            password = password.check_password(path_to_file, clear)
+
+print(password)
 
 
