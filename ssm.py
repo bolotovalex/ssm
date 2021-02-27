@@ -22,9 +22,6 @@ if __name__ == '__main__':
     list_decode = io_file.load_file(path_to_file, password)
 
     while True:
-        #make_table.make_table_from_list(list_decode, clear)
-        #make_table.make_table_from_line(list_decode[0], clear)
-        exit()
-
+        pass
 
 
