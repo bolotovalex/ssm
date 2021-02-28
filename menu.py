@@ -35,8 +35,6 @@ def check_input(ch, lst, clear):
         elif bool(re.match(r"[dDвВ]", ch)) is True:
             del_host(lst, clear)
 
-        # elif bool(re.match(r"[mMьЬ]", ch)) is True:
-        #    manage_key_menu(lst, clear)
 
         elif bool(re.match(r"[rRкК]", ch)) is True:
             backup_menu(lst, clear)
@@ -49,7 +47,61 @@ def check_input(ch, lst, clear):
 
 
 def add_host(lst, clear):
-    print('Add host')
+    make_table.from_list(lst, clear)
+    print()
+    host = input("Enter hostname, 0 - back: ")
+    if len(host) == 0:
+        print("Wrong hostname. Press Enter and retype hostname. To exit enter 0.")
+        input()
+        add_host(lst, clear)
+    elif str(host) == '0':
+        pass
+    else:
+        add_port(lst, clear, host)
+
+
+def add_port(lst, clear, host):
+    make_table.from_list(lst, clear)
+    print()
+    print("Type 0 for back to main menu")
+    port = input(f"Enter port for {host} (Press enter for default port = 22): ")
+    if len(port) == 0:
+        print("Default 22")
+        port = "22"
+        add_user(lst, clear, host, port)
+    elif str(port) == '0':
+        pass
+    elif port.isdigit() is False:
+        make_table.from_list(lst, clear)
+        print("Wrong port. Must be digit. Press Enter")
+        add_port(lst, clear, host)
+    elif int(port) < 0 or int(port) > 65536:
+        make_table.from_list(lst, clear)
+        print()
+        print("Wrong port. Port must be 1-65536. Press Enter")
+        input()
+        add_port(lst, clear, host)
+    else:
+        add_user(lst, clear, host, port)
+
+
+def add_user(lst, clear, host, port):
+    user = 'user'
+    add_key(lst, clear, host, port, user)
+
+def add_key(lst, clear, host, port, user):
+    key = 'key'
+    add_comment(lst, clear, host, port, user, key)
+
+def add_comment(lst, clear, host, port, user, key):
+    comment = 'commnet'
+    make_table.from_list(lst, clear)
+    print()
+    print(host)
+    print(port)
+    print(user)
+    print(key)
+    print(comment)
     input()
 
 
@@ -58,10 +110,14 @@ def del_host(lst, clear):
     input()
 
 
-# def manage_key_menu(lst, clear):
-#    print('manage key menu')
-# input()
-
 def backup_menu(lst, clear):
     print('backup menu')
     input()
+
+
+def generate_key():
+    pass
+
+
+def assign_key():
+    pass
