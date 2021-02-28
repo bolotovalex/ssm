@@ -1,7 +1,7 @@
 from prettytable import PrettyTable as pt
 from os import system
 
-def make_table_from_list(lst, clear): 
+def from_list(lst, clear):
     system(clear)
     number = int(1)
     table = pt()
@@ -12,8 +12,8 @@ def make_table_from_list(lst, clear):
             number+=1
     print(table)
 
-def make_table_from_line(dict, clear):
-    #system(clear)
+def from_line(dict, clear):
+    system(clear)
     table = pt()
     table.field_names = ["Host", "Port", "User", "Key", "Comment"]
     if len(dict) != 0:

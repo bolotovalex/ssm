@@ -3,6 +3,7 @@ import check_platform as ck
 import password
 import io_file
 import make_table
+import menu
 
 if __name__ == '__main__':
     check_platform = ck.check_platform()
@@ -22,6 +23,7 @@ if __name__ == '__main__':
     list_decode = io_file.load_file(path_to_file, password)
 
     while True:
-        exit()
+        make_table.from_list(list_decode, clear)
+        menu.main_menu(list_decode, clear)
 
 
