@@ -8,14 +8,17 @@ def from_list(lst, clear):
     table.field_names = ["No", "Host", "Port", "User", "Key", "Comment"]
     if len(lst) != 0:
         for i in lst:
-            table.add_row([number, i['host'], i['port'], i['user'], i['key'], i['comment']])
-            number+=1
+            if len(i['key']) != 0:
+                table.add_row([number, i['host'], i['port'], i['user'], 'Yes', i['comment']])
+                number+=1
+            else:
+                table.add_row([number, i['host'], i['port'], i['user'], 'No', i['comment']])
+                number += 1
     print(table)
 
-def from_line(dict, clear):
+def from_elements(clear, host='', port='', user='', comment='', key=''):
     system(clear)
     table = pt()
     table.field_names = ["Host", "Port", "User", "Key", "Comment"]
-    if len(dict) != 0:
-        table.add_row([dict['host'], dict['port'], dict['user'], dict['key'], dict['comment']])
+    table.add_row([host, port, user, key, comment])
     print(table)

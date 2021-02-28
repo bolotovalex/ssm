@@ -4,6 +4,7 @@ from os import system, mkdir, path
 def check_platform():
     if ck() == 'Windows': #If platform Windows
         print('This is Windows')
+        platform = 'windows'
         pass
         clear_command = 'cls'
         pip_v = 'pip'
@@ -27,6 +28,7 @@ def check_platform():
 
     else: #If platform not Windows
         print('Detect unix system')
+        platform = 'linux'
         home = path.expanduser('~')
         home_local = home + '/.ssm/'
         name_config = 'base.ssm'
@@ -51,4 +53,4 @@ def check_platform():
             f = open(path_to_config, 'tw', encoding='utf-8')
             f.close()
 
-    return clear_command, pip_v, name_config, path_to_config, path_to_keys
+    return clear_command, pip_v, name_config, path_to_config, path_to_keys, platform

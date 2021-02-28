@@ -29,7 +29,7 @@ def create_password(path_to_file, clear):
                     f.close()
     return password
 
-def check_password(path_to_file, clear):
+def check_password(path_to_file, clear, i=1):
     system(clear)
     password = getpass.getpass('Enter master password: ')
     with open(path_to_file, 'r') as f:
@@ -38,9 +38,15 @@ def check_password(path_to_file, clear):
     if pass_in_file.rstrip() == encode.encode(password, password):
         return password
     else:
+        i += 1
+        if i > 3:
+            system(clear)
+            print('3 times type wrong password. Exit')
+            exit()
         system(clear)
-        print('Wrong')
-        exit()
+        print('Wrong. Press Enter and retype password')
+        input()
+        check_password(path_to_file, clear, i)
 
 
 

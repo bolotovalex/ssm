@@ -22,5 +22,6 @@ if __name__ == '__main__':
     list_decode = io_file.load_file(path_to_file, password)
 
     while True:
+        list_decode = io_file.load_file(path_to_file, password)
         make_table.from_list(list_decode, clear)
         menu.main_menu(list_decode, clear)
