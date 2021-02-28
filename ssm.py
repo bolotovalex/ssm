@@ -1,4 +1,3 @@
-# This is a sample Python script.
 import check_platform as ck
 import password
 import io_file
@@ -13,7 +12,7 @@ if __name__ == '__main__':
     path_to_file = check_platform[3]
     ssh_key_folder = check_platform[4]
 
-    #Check file and password
+    # Check file and password
     with open(path_to_file) as f:
         pass_in_file = f.readline()
         if len(pass_in_file) < 8:
@@ -25,5 +24,3 @@ if __name__ == '__main__':
     while True:
         make_table.from_list(list_decode, clear)
         menu.main_menu(list_decode, clear)
-
-
