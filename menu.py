@@ -1,6 +1,6 @@
 import re
 import make_table
-from os import system, walk
+from os import system, walk, remove
 import check_platform
 import password
 from time import strftime
@@ -8,7 +8,7 @@ import io_file
 
 def main_menu(lst, clear):
     print()
-    print('Type nubmer for connect or type command:')
+    print('Type number for connect or type command:')
     print(' a - Add new host')
     print(' d - Delete host')
     # print(' m - Manage key')
@@ -149,6 +149,7 @@ def add_key(lst, clear, host, port, user, comment):
         paswrd = password.check_password(path_to_file, clear)
         pub_key, key = generate_key(path_to_keys, paswrd)
         make_table.from_elements(clear, host, port, user, comment, key)
+        remove(f"{path_to_keys}/{key}.pub")
         print()
         if len(user) == 0:
             print(f'Copy and paste this key to: {host}:/home/user/.ssh/authorized_keys')
@@ -158,7 +159,7 @@ def add_key(lst, clear, host, port, user, comment):
         print(pub_key)
         print()
         print('Press enter')
-        lst.append({'host': host, 'port': port, 'user': user, 'comment': comment, 'key': key[1]})
+        lst.append({'host': host, 'port': port, 'user': user, 'comment': comment, 'key': key})
         io_file.save_file(path_to_file, lst, paswrd)
         input()
     elif bool(re.match(r"[aA]", ch)) is True:
@@ -183,7 +184,7 @@ def add_key(lst, clear, host, port, user, comment):
             print('0')
             input()
             add_key(lst, clear, host, port, user, comment)
-        elif ch_number <= len(list_files) and ch_number >= 1:
+        elif len(list_files) >= ch_number >= 1:
             key = list_files[ch_number - 1]
             paswrd = password.check_password(path_to_file, clear)
             lst.append({'host': host, 'port': port, 'user': user, 'comment': comment, 'key': key})
@@ -205,9 +206,9 @@ def add_key(lst, clear, host, port, user, comment):
         input()
         add_key(lst, clear, host, port, user, comment)
 
-def generate_key(path, password):
+def generate_key(path, passwd):
     key_name = f'key-{strftime("%Y%m%d-%H%M%S")}'
-    line_call = (f'ssh-keygen -t rsa -f {path}/{key_name} -N {password}')
+    line_call = f'ssh-keygen -t rsa -f {path}/{key_name} -C {key_name}' #-N {passwd}  '
     system(line_call)
     with open(f"{path}/{key_name}.pub") as f:
         lines = f.readlines()
