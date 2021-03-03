@@ -2,11 +2,9 @@ import re
 import make_table
 from os import system, walk
 import check_platform
-#from Crypto.PublicKey import RSA
 import password
 from time import strftime
 import io_file
-
 
 def main_menu(lst, clear):
     print()
@@ -20,7 +18,6 @@ def main_menu(lst, clear):
     ch = input('Enter number for connect or letter for config: ')
     check_input(ch, lst, clear)
 
-
 def check_input(ch, lst, clear):
     if bool(re.match(r"[0-9aAdDmMbBrRфФвВьЬиИкК]", ch)) is True:
         if bool(re.match(r"[0-9]", ch)) is True:
@@ -33,23 +30,34 @@ def check_input(ch, lst, clear):
                 print()
                 print('Wrong number. Press Enter.')
                 input()
+            else:
+                check = check_platform.check_platform()
+                platform = check[5]
+                path_to_keys = check[4]
+
+                if platform == 'linux':
+                    if len(lst[int(ch)-1]['key']) != 0:
+                        system(clear)
+                        system(f"ssh -p {lst[int(ch)-1]['port']} -i {path_to_keys}/{lst[int(ch)-1]['key']} {lst[int(ch)-1]['user']}@{lst[int(ch)-1]['host']}")
+                        print('Press Enter')
+                        input()
+                    else:
+                        system(clear)
+                        system(f"ssh -p {lst[int(ch) - 1]['port']} {lst[int(ch) - 1]['user']}@{lst[int(ch) - 1]['host']}")
+                        print('Press Enter')
+                        input()
 
         if bool(re.match(r"[aAфФ]", ch)) is True:
             add_host(lst, clear)
-
         elif bool(re.match(r"[dDвВ]", ch)) is True:
             del_host(lst, clear)
-
-
         elif bool(re.match(r"[rRкК]", ch)) is True:
             backup_menu(lst, clear)
-
     else:
         make_table.from_list(lst, clear)
         print()
         print('Wrong input. Press Enter')
         input()
-
 
 def add_host(lst, clear):
     make_table.from_elements(clear)
@@ -66,7 +74,6 @@ def add_host(lst, clear):
         pass
     else:
         add_port(lst, clear, host)
-
 
 def add_port(lst, clear, host):
     make_table.from_elements(clear, host)
@@ -96,7 +103,6 @@ def add_port(lst, clear, host):
     else:
         add_user(lst, clear, host, port)
 
-
 def add_user(lst, clear, host, port):
     make_table.from_elements(clear, host, port)
     print()
@@ -108,7 +114,6 @@ def add_user(lst, clear, host, port):
         pass
     else:
         add_comment(lst, clear, host, port, user)
-
 
 def add_comment(lst, clear, host, port, user):
     make_table.from_elements(clear, host, port, user)
@@ -127,7 +132,6 @@ def add_comment(lst, clear, host, port, user):
         pass
     else:
         add_key(lst, clear, host, port, user, comment)
-
 
 def add_key(lst, clear, host, port, user, comment):
     make_table.from_elements(clear, host, port, user, comment)
@@ -152,13 +156,11 @@ def add_key(lst, clear, host, port, user, comment):
             print(f'Copy and paste this key to: {host}:/home/{user}/.ssh/authorized_keys')
         print()
         print(pub_key)
-
         print()
         print('Press enter')
         lst.append({'host': host, 'port': port, 'user': user, 'comment': comment, 'key': key[1]})
         io_file.save_file(path_to_file, lst, paswrd)
         input()
-
     elif bool(re.match(r"[aA]", ch)) is True:
         make_table.from_elements(clear, host, port, user, comment)
         list_files = []
@@ -203,7 +205,6 @@ def add_key(lst, clear, host, port, user, comment):
         input()
         add_key(lst, clear, host, port, user, comment)
 
-
 def generate_key(path, password):
     key_name = f'key-{strftime("%Y%m%d-%H%M%S")}'
     line_call = (f'ssh-keygen -t rsa -f {path}/{key_name} -N {password}')
@@ -237,7 +238,7 @@ def del_host(lst, clear):
         print('No hosts. Press Enter')
         input()
     else:
-        make_table.from_list(lst,clear)
+        make_table.from_list(lst, clear)
         print()
         print('Enter the host number to delete. 0 - back')
         number = input('Host: ')
@@ -250,7 +251,7 @@ def del_host(lst, clear):
         else:
             if str(number) == '0':
                 pass
-            elif len(lst) > int(number):
+            elif len(lst) < int(number):
                 make_table.from_list(lst, clear)
                 print()
                 print('Wrong number. Press Enter')
@@ -262,7 +263,8 @@ def del_host(lst, clear):
                     key = '+'
                 else:
                     key = ''
-                make_table.from_elements(clear, lst[number - 1]['host'], lst[number - 1]['port'], lst[number - 1]['user'], key, lst[number - 1]['comment'])
+                make_table.from_elements(clear, lst[number - 1]['host'], lst[number - 1]['port'],
+                                         lst[number - 1]['user'], key, lst[number - 1]['comment'])
                 print()
                 ch = input('Are you sure delete this record?(Yes/No): ')
                 if check_yes_no(ch) is True:
@@ -281,14 +283,9 @@ def del_host(lst, clear):
                     print('Abort. Press Enter')
                     input()
 
-
 def backup_menu(lst, clear):
     print('backup menu')
     input()
-
-
-def assign_key():
-    pass
 
 def check_yes_no(ch):
     if bool(re.match(r"[Yy][eE][sS]|[Yy]", ch)) is True:
