@@ -273,8 +273,7 @@ def del_host(lst, clear):
                     path_to_keys = platform[4]
                     path_to_file = platform[3]
                     paswrd = password.check_password(path_to_file, clear)
-                    system(f"rm -rf {path_to_keys}/{lst[number - 1]['key']}")
-                    system(f"rm -rf {path_to_keys}/{lst[number - 1]['key']}.pub")
+                    remove(f"{path_to_keys}/{lst[number - 1]['key']}")
                     lst.pop(int(number) - 1)
                     io_file.save_file(path_to_file, lst, paswrd)
                 else:
