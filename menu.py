@@ -2,7 +2,7 @@ import re
 import make_table
 from os import system
 import check_platform
-from Crypto.PublicKey import RSA
+#from Crypto.PublicKey import RSA
 import password
 from time import strftime
 import io_file
@@ -143,15 +143,16 @@ def add_key(lst, clear, host, port, user, comment):
     path_to_file = platform[3]
     if bool(re.match(r"[gG]", ch)) is True:
         paswrd = password.check_password(path_to_file, clear)
-        key = generate_key(path_to_keys)
-        make_table.from_elements(clear, host, port, user, comment, key[1])
+        pub_key, key = generate_key(path_to_keys, paswrd)
+        make_table.from_elements(clear, host, port, user, comment, key)
         print()
         if len(user) == 0:
             print(f'Copy and paste this key to: {host}:/home/user/.ssh/authorized_keys')
         else:
             print(f'Copy and paste this key to: {host}:/home/{user}/.ssh/authorized_keys')
         print()
-        print(key[0])
+        print(pub_key)
+
         print()
         print('Press enter')
         lst.append({'host': host, 'port': port, 'user': user, 'comment': comment, 'key': key[1]})
@@ -173,9 +174,15 @@ def add_key(lst, clear, host, port, user, comment):
         add_key(lst, clear, host, port, user, comment)
 
 
-def generate_key(path):
+def generate_key(path, password):
     key_name = f'key-{strftime("%Y%m%d-%H%M%S")}'
-    key = RSA.generate(1024)
+    line_call = (f'ssh-keygen -t rsa -f {path}/{key_name} -N {password}')
+    system(line_call)
+    with open(f"{path}/{key_name}.pub") as f:
+        lines = f.readlines()
+    print(lines[0])
+    return lines[0], key_name
+    '''key = RSA.generate(1024)
     f = open(f"{path}/{key_name}", "wb")
     f.write(key.exportKey('PEM'))
     f.close()
@@ -190,11 +197,59 @@ def generate_key(path):
     pubkey = key.publickey()
     pubkey_print = re.findall(r"b\'{1}(.*)\'", str(pubkey.exportKey('OpenSSH')))
     return pubkey_print[0], key_name
-
+    input()
+'''
 
 def del_host(lst, clear):
-    print('Del host')
-    input()
+    if len(lst) == 0:
+        make_table.from_list(lst, clear)
+        print()
+        print('No hosts. Press Enter')
+        input()
+    else:
+        make_table.from_list(lst,clear)
+        print()
+        print('Enter the host number to delete. 0 - back')
+        number = input('Host: ')
+        if number.isdigit() is False:
+            make_table.from_list(lst, clear)
+            print()
+            print('Wrong number. Press Enter')
+            input()
+            del_host(lst, clear)
+        else:
+            if str(number) == '0':
+                pass
+            elif len(lst) > int(number):
+                make_table.from_list(lst, clear)
+                print()
+                print('Wrong number. Press Enter')
+                input()
+                del_host(lst, clear)
+            else:
+                number = int(number)
+                if len(lst[number - 1]['key']) > 0:
+                    key = '+'
+                else:
+                    key = ''
+                make_table.from_elements(clear, lst[number - 1]['host'], lst[number - 1]['port'], lst[number - 1]['user'], key, lst[number - 1]['comment'])
+                print()
+                ch = input('Are you sure delete this record?(Yes/No): ')
+                if check_yes_no(ch) is True:
+                    platform = check_platform.check_platform()
+                    path_to_keys = platform[4]
+                    path_to_file = platform[3]
+                    paswrd = password.check_password(path_to_file, clear)
+                    system(f"rm -rf {path_to_keys}/{lst[number - 1]['key']}")
+                    system(f"rm -rf {path_to_keys}/{lst[number - 1]['key']}.pub")
+                    lst.pop(int(number) - 1)
+                    io_file.save_file(path_to_file, lst, paswrd)
+                else:
+                    make_table.from_elements(clear, lst[number - 1]['host'], lst[number - 1]['port'],
+                                             lst[number - 1]['user'], key, lst[number - 1]['comment'])
+                    print()
+                    print('Abort. Press Enter')
+                    input()
 
 
 def backup_menu(lst, clear):
@@ -204,3 +259,9 @@ def backup_menu(lst, clear):
 
 def assign_key():
     pass
+
+def check_yes_no(ch):
+    if bool(re.match(r"[Yy][eE][sS]|[Yy]", ch)) is True:
+        return True
+    elif bool(re.match(r"[Nn][oO]|[Nn]", ch)) is True:
+        return False
