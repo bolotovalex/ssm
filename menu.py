@@ -1,6 +1,6 @@
 import re
 import make_table
-from os import system
+from os import system, walk
 import check_platform
 #from Crypto.PublicKey import RSA
 import password
@@ -158,12 +158,42 @@ def add_key(lst, clear, host, port, user, comment):
         lst.append({'host': host, 'port': port, 'user': user, 'comment': comment, 'key': key[1]})
         io_file.save_file(path_to_file, lst, paswrd)
         input()
+
     elif bool(re.match(r"[aA]", ch)) is True:
-        print('In develop')
-        input()
-    elif bool(re.match(r"[nN]", ch)) is True or len(ch) == 0:
-        print('In develop')
-        input()
+        make_table.from_elements(clear, host, port, user, comment)
+        list_files = []
+        for root, dirs, files in walk(path_to_keys):
+            for filename in files:
+                list_files.append(filename)
+        print()
+        no = 1
+        print('List files, 0 - back:')
+        for i in list_files:
+            print(f"{no}. {i}")
+            no += 1
+        print()
+        ch_number = input('Enter the number to bind the key: ')
+        if ch_number.isdigit() is True:
+            ch_number = int(ch_number)
+        else:
+            add_key(lst, clear, host, port, user, comment)
+        if ch_number == 0:
+            print('0')
+            input()
+            add_key(lst, clear, host, port, user, comment)
+        elif ch_number <= len(list_files) and ch_number >= 1:
+            key = list_files[ch_number - 1]
+            paswrd = password.check_password(path_to_file, clear)
+            lst.append({'host': host, 'port': port, 'user': user, 'comment': comment, 'key': key})
+            io_file.save_file(path_to_file, lst, paswrd)
+        else:
+            print('any')
+            input()
+            add_key(lst, clear, host, port, user, comment)
+    elif bool(re.match(r"[nN]|[Nn][Oo]", ch)) is True or len(ch) == 0:
+        lst.append({'host': host, 'port': port, 'user': user, 'comment': comment, 'key': ''})
+        paswrd = password.check_password(path_to_file, clear)
+        io_file.save_file(path_to_file, lst, paswrd)
     elif str(ch) == '0':
         pass
     else:
