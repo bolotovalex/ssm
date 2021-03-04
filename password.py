@@ -36,7 +36,7 @@ def check_password(path_to_file, clear, i=1):
         pass_in_file = f.readline()
         f.close()
     if pass_in_file.rstrip() == encode.encode(password, password):
-        return password
+        pass
     else:
         i += 1
         if i > 3:
@@ -46,7 +46,8 @@ def check_password(path_to_file, clear, i=1):
         system(clear)
         print('Wrong. Press Enter and retype password')
         input()
-        check_password(path_to_file, clear, i)
+        password = check_password(path_to_file, clear, i)
+    return password
 
 
 
