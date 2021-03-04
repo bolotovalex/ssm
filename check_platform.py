@@ -53,4 +53,4 @@ def check_platform():
             f = open(path_to_config, 'tw', encoding='utf-8')
             f.close()
 
-    return clear_command, pip_v, name_config, path_to_config, path_to_keys, platform
+    return clear_command, pip_v, name_config, path_to_config, path_to_keys, platform, home

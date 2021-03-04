@@ -5,6 +5,7 @@ import check_platform
 import password
 from time import strftime
 import io_file
+import backup
 
 def main_menu(lst, clear):
     print()
@@ -284,8 +285,31 @@ def del_host(lst, clear):
                     input()
 
 def backup_menu(lst, clear):
-    print('backup menu')
-    input()
+    make_table.from_list(lst, clear)
+    print()
+    print("Command:")
+    print("1 - Create backup")
+    print("2 - Restore backup")
+    print("0 - Back")
+    print()
+    chb = input('Enter command: ')
+    if chb == '0':
+        pass
+    elif chb == '1':
+        platform = check_platform.check_platform()
+        path_to_file = platform[3]
+        path_to_key = platform[4]
+        home = platform[6]
+        backup.backup(lst, clear, path_to_file, path_to_key, home)
+    elif chb == '2':
+        pass
+    else:
+        make_table.from_list(lst, clear)
+        print()
+        print('Wrong command. Press Enter.')
+        input()
+        backup_menu(lst, clear)
+
 
 def check_yes_no(ch):
     if bool(re.match(r"[Yy][eE][sS]|[Yy]", ch)) is True:
