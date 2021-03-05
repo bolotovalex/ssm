@@ -1,5 +1,5 @@
 import password
-from os import path
+from os import path, chmod, system
 import make_table
 from time import strftime
 import json
@@ -71,6 +71,8 @@ def restore(lst, clear, path_to_key, path_to_file):
                 for r in i['key_entry']:
                     f.write(r)
                 f.close()
+                #chmod(f"{path_to_key}/{encode.decode(passwd, i['key'])}", 1130)
+                system(f"chmod 600 {path_to_key}/{encode.decode(passwd, i['key'])}")
         io_file.save_file(path_to_file, lst, passwd)
         make_table.from_list(lst, clear)
         print()
