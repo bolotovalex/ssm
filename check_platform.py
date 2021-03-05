@@ -25,6 +25,9 @@ def check_platform():
             if path.exists(path_to_config) == False:
                 f = open(path_to_config, 'tw', encoding='utf-8')
                 f.close()
+        system(clear_command)
+        print('Windows not support for now.')
+        exit()
 
     else: #If platform not Windows
         print('Detect unix system')

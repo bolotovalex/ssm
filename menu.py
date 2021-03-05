@@ -302,7 +302,10 @@ def backup_menu(lst, clear):
         home = platform[6]
         backup.backup(lst, clear, path_to_file, path_to_key, home)
     elif chb == '2':
-        pass
+        platform = check_platform.check_platform()
+        path_to_file = platform[3]
+        path_to_key = platform[4]
+        backup.restore(lst, clear, path_to_key, path_to_file)
     else:
         make_table.from_list(lst, clear)
         print()

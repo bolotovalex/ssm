@@ -1,6 +1,6 @@
 import getpass
 from os import system
-import encode
+from encode import encode
 
 def create_password(path_to_file, clear):
     system(clear)
@@ -23,7 +23,7 @@ def create_password(path_to_file, clear):
             ch = input('Continue?: ')
             if ch == 'y' or ch == 'Y':
                 with open(path_to_file, 'w') as f:
-                    f.write(f"{encode.encode(password, password)}\n")
+                    f.write(f"{encode(password, password)}\n")
                     f.write(f"[\n")
                     f.write(f"]\n")
                     f.close()
@@ -35,7 +35,7 @@ def check_password(path_to_file, clear, i=1):
     with open(path_to_file, 'r') as f:
         pass_in_file = f.readline()
         f.close()
-    if pass_in_file.rstrip() == encode.encode(password, password):
+    if pass_in_file.rstrip() == encode(password, password):
         pass
     else:
         i += 1

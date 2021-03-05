@@ -4,6 +4,7 @@ import make_table
 from time import strftime
 import json
 import encode
+import io_file
 
 def backup(lst, clear, path_to_file, path_to_key, home):
     path_for_backup = backup_path(home, lst, clear)
@@ -45,8 +46,45 @@ def backup_path(home, lst, clear):
 #    return backup_password
 
 
-def restore(lst, clear, path_to_key):
-    pass
+def restore(lst, clear, path_to_key, path_to_file):
+    make_table.from_list(lst, clear)
+    print()
+    print('Enter path and filename to backup file(ssmb): ')
+    path_for_backup = input('Path: ')
+    if path.exists(path_for_backup) is True:
+        passwd = password.check_password(path_to_file, clear)
+        with open(path_for_backup) as f:
+            enc_passwd = f.readline()
+            if passwd == encode.decode(passwd, enc_passwd.strip()):
+                entry_for_backup = f.readline()
+        entry = json.loads(entry_for_backup)
+        lst = []
+        for i in entry:
+            j = {}
+            j['host'] = encode.decode(passwd, i['host'])
+            j['port'] = encode.decode(passwd, i['port'])
+            j['user'] = encode.decode(passwd, i['user'])
+            j['comment'] = encode.decode(passwd, i['comment'])
+            j['key'] = encode.decode(passwd, i['key'])
+            lst.append(j)
+            with open(f"{path_to_key}/{encode.decode(passwd, i['key'])}",'w') as f:
+                for r in i['key_entry']:
+                    f.write(r)
+                f.close()
+        io_file.save_file(path_to_file, lst, passwd)
+        make_table.from_list(lst, clear)
+        print()
+        print('Restore complite. Press Enter')
+        input()
+
+
+    else:
+        make_table.from_list(lst, clear)
+        print()
+        print(f'File {path} not exists. Press Enter ')
+        input()
+        restore(lst, clear, path_to_key, path_to_file)
+
 
 def make_backup(lst, folder_for_backup, path_to_key, path_to_file, clear):
     passwd = password.check_password(path_to_file, clear)
