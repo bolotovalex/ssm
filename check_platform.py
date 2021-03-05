@@ -1,5 +1,6 @@
 from platform import system as ck
 from os import system, mkdir, path
+from sys import exit as exit_cmd
 
 def check_platform():
     if ck() == 'Windows': #If platform Windows
@@ -27,7 +28,7 @@ def check_platform():
                 f.close()
         system(clear_command)
         print('Windows not support for now.')
-        exit()
+        exit_cmd(0)
 
     else: #If platform not Windows
         print('Detect unix system')

@@ -6,6 +6,7 @@ import password
 from time import strftime
 import io_file
 import backup
+from sys import exit as exit_cmd
 
 def main_menu(lst, clear):
     print()
@@ -24,7 +25,7 @@ def check_input(ch, lst, clear):
         if bool(re.match(r"[0-9]", ch)) is True:
             if int(ch) == 0:
                 system(clear)
-                exit()
+                exit_cmd(0)
 
             if int(ch) > len(lst):
                 make_table.from_list(lst, clear)

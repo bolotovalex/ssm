@@ -1,6 +1,7 @@
 import getpass
 from os import system
 from encode import encode
+from sys import exit as exit_cmd
 
 def create_password(path_to_file, clear):
     system(clear)
@@ -42,7 +43,7 @@ def check_password(path_to_file, clear, i=1):
         if i > 3:
             system(clear)
             print('3 times type wrong password. Exit')
-            exit()
+            exit_cmd(1)
         system(clear)
         print('Wrong. Press Enter and retype password')
         input()
