@@ -1,5 +1,5 @@
 import password
-from os import path, chmod, system
+from os import path, chmod, system, listdir
 import make_table
 from time import strftime
 import json
@@ -40,17 +40,27 @@ def backup_path(home, lst, clear):
             p = backup_path(home, lst, clear)
     return p
 
-#def backup_password(lst, clear):
-#    make_table.from_list(lst, clear)
-#    print()
-#    return backup_password
 
-
-def restore(lst, clear, path_to_key, path_to_file):
+def restore(lst, clear, path_to_key, path_to_file, home):
     make_table.from_list(lst, clear)
     print()
+    files = listdir(home)
+    ssmb_files = []
+    for i in files:
+        if i.endswith('.ssmb'):
+            ssmb_files.append(i)
+    if len(ssmb_files) == 0:
+        print(f'No .ssmb files in {home}')
+    else:
+        print(f'SSMB files in {home}: ')
+        for i in ssmb_files:
+            print(i)
+
+    print()
     print('Enter path and filename to backup file(ssmb): ')
+
     path_for_backup = input('Path: ')
+
     if path.exists(path_for_backup) is True:
         passwd = password.check_password(path_to_file, clear)
         with open(path_for_backup) as f:
@@ -68,8 +78,8 @@ def restore(lst, clear, path_to_key, path_to_file):
             j['key'] = encode.decode(passwd, i['key'])
             lst.append(j)
             with open(f"{path_to_key}/{encode.decode(passwd, i['key'])}",'w') as f:
-                for r in i['key_entry']:
-                    f.write(r)
+                for row in i['key_entry']:
+                    f.write(encode.decode(passwd, row))
                 f.close()
                 #chmod(f"{path_to_key}/{encode.decode(passwd, i['key'])}", 1130)
                 system(f"chmod 600 {path_to_key}/{encode.decode(passwd, i['key'])}")
