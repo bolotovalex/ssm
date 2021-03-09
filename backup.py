@@ -98,15 +98,18 @@ def make_backup(lst, folder_for_backup, path_to_key, path_to_file, clear):
         with open(f"{path_to_key}/{encode.decode(passwd, j['key'])}") as f:
             key_entry = f.readlines()
             f.close()
-        j['key_entry'] = key_entry
+        key_encode = []
+        for k in key_entry:
+            key_encode.append(encode.encode(passwd, k))
+        j['key_entry'] = key_encode
         lst_encode.append(j)
-    with open(f'{folder_for_backup}/{strftime("%Y%m%d-%H%M%S")}.ssmb', 'w') as f:
+    file_backup = f'{folder_for_backup}/{strftime("%Y%m%d-%H%M%S")}.ssmb'
+    with open(file_backup, 'w') as f:
         f.write(f"{encode.encode(passwd, passwd)}\n")
         for i in json.dumps(lst_encode):
             f.write(i)
         f.close()
-
-    print('make backup in develop')
+    print(f'Backup complete. File: {file_backup}')
     input()
 
 

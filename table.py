@@ -1,5 +1,3 @@
-import json
-
 json_list = [{'host': 'example.exampldomain.com', 'port': '22', 'user': 'SuperAdm', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}, {'host': 'exampldomain.com', 'port': '2022', 'user': 'SuperAdmdddd', 'comment': 'abrakadabrasadfsdfasdfasf'}]
 #json_list = []
 class Table(object):
@@ -12,6 +10,7 @@ class Table(object):
         self.lsit_for_print_table= []
 
     def field_table(self, json_list):
+        '''Create Field table. Check max lenght cell'''
         if len(json_list) != 0:
             self.field_name.append('№')
             for self.key, self.value in json_list[0].items():
@@ -23,6 +22,7 @@ class Table(object):
         self.max_cell = len(self.field_name)
 
     def rows_table(self, json_list):
+        '''Add row to table. Check max lenght cell'''
         if len(json_list) != 0 :
             for self.i in json_list:
                 self.row = []
