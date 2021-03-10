@@ -5,12 +5,12 @@ from sys import exit as exit_cmd
 def check_platform():
     if ck() == 'Windows': #If platform Windows
         print('This is Windows')
-        platform = 'windows'
+        platform = 'win'
         pass
         clear_command = 'cls'
         pip_v = 'pip'
-        home = path.expanduser("~")
-        home_local = home + str("\\.ssm\\")
+        home = path.expanduser(f"~\\")
+        home_local = home + str(".ssm\\")
         check = system(f'cd {home_local}')
         name_config = 'base.ssm'
         path_to_config = home_local + name_config
@@ -27,17 +27,15 @@ def check_platform():
                 f = open(path_to_config, 'tw', encoding='utf-8')
                 f.close()
         system(clear_command)
-        print('Windows not support for now.')
-        exit_cmd(0)
 
     else: #If platform not Windows
         print('Detect unix system')
         platform = 'linux'
-        home = path.expanduser('~')
-        home_local = home + '/.ssm/'
+        home = path.expanduser(f'~/')
+        home_local = home + '.ssm/'
         name_config = 'base.ssm'
         path_to_config = home_local + name_config
-        path_to_keys = home + '/.ssh'
+        path_to_keys = home + '.ssh'
         clear_command = 'clear'
         pip_v = 'pip3'
 
@@ -58,3 +56,5 @@ def check_platform():
             f.close()
 
     return clear_command, pip_v, name_config, path_to_config, path_to_keys, platform, home
+
+print(check_platform())

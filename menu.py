@@ -297,18 +297,20 @@ def backup_menu(lst, clear):
     if chb == '0':
         pass
     elif chb == '1':
-        platform = check_platform.check_platform()
-        path_to_file = platform[3]
-        path_to_key = platform[4]
-        home = platform[6]
-        backup.backup(lst, clear, path_to_file, path_to_key, home)
+        check = check_platform.check_platform()
+        path_to_file = check[3]
+        path_to_key = check[4]
+        platform = check[5]
+        home = check[6]
+        backup.backup(lst, clear, path_to_file, path_to_key, home, platform)
     elif chb == '2':
-        platform = check_platform.check_platform()
-        path_to_file = platform[3]
-        path_to_key = platform[4]
-        home = platform[6]
+        check = check_platform.check_platform()
+        path_to_file = check[3]
+        path_to_key = check[4]
+        home = check[6]
+        platform = check[5]
 
-        backup.restore(lst, clear, path_to_key, path_to_file, home)
+        backup.restore(lst, clear, path_to_key, path_to_file, home, platform)
     else:
         make_table.from_list(lst, clear)
         print()
