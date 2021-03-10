@@ -3,6 +3,7 @@ from os import system
 from encode import encode
 from sys import exit as exit_cmd
 
+
 def create_password(path_to_file, clear):
     system(clear)
     print('Create new password')
@@ -11,13 +12,13 @@ def create_password(path_to_file, clear):
         system(clear)
         print('Password is to short. Press enter and retype password')
         input()
-        create_password()
+        create_password(path_to_file, clear)
     else:
         password2 = getpass.getpass('Retype new password: ')
         if password != password2:
             print('Password mismatch. Press Enter and retype passwords')
             input()
-            create_password()
+            create_password(path_to_file, clear)
         else:
             system(clear)
             print('!!!WARNING!!! All data will be lose.')
@@ -29,6 +30,7 @@ def create_password(path_to_file, clear):
                     f.write(f"]\n")
                     f.close()
     return password
+
 
 def check_password(path_to_file, clear, i=1):
     system(clear)
@@ -49,6 +51,3 @@ def check_password(path_to_file, clear, i=1):
         input()
         password = check_password(path_to_file, clear, i)
     return password
-
-
-

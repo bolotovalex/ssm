@@ -1,9 +1,10 @@
 import json
 import encode
 
+
 def load_file(path_to_file, password):
     with open(path_to_file) as f:
-        encode_password = f.readline()
+        f.readline()
         lst_encode = json.load(f)
     lst_decode = []
     for i in lst_encode:
@@ -12,6 +13,7 @@ def load_file(path_to_file, password):
             j[key] = encode.decode(password, value)
         lst_decode.append(j)
     return lst_decode
+
 
 def save_file(path_to_file, lst_decode, password):
     lst_encode = []
@@ -25,5 +27,3 @@ def save_file(path_to_file, lst_decode, password):
         for i in json.dumps(lst_encode):
             f.write(i)
         f.close()
-
-

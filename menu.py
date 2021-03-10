@@ -8,6 +8,7 @@ import io_file
 import backup
 from sys import exit as exit_cmd
 
+
 def main_menu(lst, clear):
     print()
     print('Type number for connect or type command:')
@@ -19,6 +20,7 @@ def main_menu(lst, clear):
     print()
     ch = input('Enter number for connect or letter for config: ')
     check_input(ch, lst, clear)
+
 
 def check_input(ch, lst, clear):
     if bool(re.match(r"[0-9aAdDmMbBrRфФвВьЬиИкК]", ch)) is True:
@@ -38,14 +40,16 @@ def check_input(ch, lst, clear):
                 path_to_keys = check[4]
 
                 if platform == 'linux':
-                    if len(lst[int(ch)-1]['key']) != 0:
+                    if len(lst[int(ch) - 1]['key']) != 0:
                         system(clear)
-                        system(f"ssh -p {lst[int(ch)-1]['port']} -i {path_to_keys}/{lst[int(ch)-1]['key']} {lst[int(ch)-1]['user']}@{lst[int(ch)-1]['host']}")
+                        system(f"ssh -p {lst[int(ch) - 1]['port']} -i {path_to_keys}/{lst[int(ch) - 1]['key']} "
+                               f"{lst[int(ch) - 1]['user']}@{lst[int(ch) - 1]['host']}")
                         print('Press Enter')
                         input()
                     else:
                         system(clear)
-                        system(f"ssh -p {lst[int(ch) - 1]['port']} {lst[int(ch) - 1]['user']}@{lst[int(ch) - 1]['host']}")
+                        system(
+                            f"ssh -p {lst[int(ch) - 1]['port']} {lst[int(ch) - 1]['user']}@{lst[int(ch) - 1]['host']}")
                         print('Press Enter')
                         input()
 
@@ -60,6 +64,7 @@ def check_input(ch, lst, clear):
         print()
         print('Wrong input. Press Enter')
         input()
+
 
 def add_host(lst, clear):
     make_table.from_elements(clear)
@@ -76,6 +81,7 @@ def add_host(lst, clear):
         pass
     else:
         add_port(lst, clear, host)
+
 
 def add_port(lst, clear, host):
     make_table.from_elements(clear, host)
@@ -105,6 +111,7 @@ def add_port(lst, clear, host):
     else:
         add_user(lst, clear, host, port)
 
+
 def add_user(lst, clear, host, port):
     make_table.from_elements(clear, host, port)
     print()
@@ -116,6 +123,7 @@ def add_user(lst, clear, host, port):
         pass
     else:
         add_comment(lst, clear, host, port, user)
+
 
 def add_comment(lst, clear, host, port, user):
     make_table.from_elements(clear, host, port, user)
@@ -134,6 +142,7 @@ def add_comment(lst, clear, host, port, user):
         pass
     else:
         add_key(lst, clear, host, port, user, comment)
+
 
 def add_key(lst, clear, host, port, user, comment):
     make_table.from_elements(clear, host, port, user, comment)
@@ -208,31 +217,31 @@ def add_key(lst, clear, host, port, user, comment):
         input()
         add_key(lst, clear, host, port, user, comment)
 
+
 def generate_key(path, passwd):
     key_name = f'key-{strftime("%Y%m%d-%H%M%S")}'
-    line_call = f'ssh-keygen -t rsa -f {path}/{key_name} -C {key_name}' #-N {passwd}  '
+    line_call = f'ssh-keygen -t rsa -f {path}/{key_name} -C {key_name}'  # -N {passwd}  '
     system(line_call)
     with open(f"{path}/{key_name}.pub") as f:
         lines = f.readlines()
     print(lines[0])
     return lines[0], key_name
-    '''key = RSA.generate(1024)
-    f = open(f"{path}/{key_name}", "wb")
-    f.write(key.exportKey('PEM'))
-    f.close()
-    platform = check_platform.check_platform()
-    if platform[5] == 'linux':
-        system(f'chmod 600 {path}/{key_name}')
-    elif platform[5] == 'win':
-        pass
-    elif platform[5] == 'mac':
-        pass
+    # key = RSA.generate(1024)
+    # f = open(f"{path}/{key_name}", "wb")
+    # f.write(key.exportKey('PEM'))
+    # f.close()
+    # platform = check_platform.check_platform()
+    # if platform[5] == 'linux':
+    #    system(f'chmod 600 {path}/{key_name}')
+    # elif platform[5] == 'win':
+    #    pass
+    # elif platform[5] == 'mac':
+    #    pass
 
-    pubkey = key.publickey()
-    pubkey_print = re.findall(r"b\'{1}(.*)\'", str(pubkey.exportKey('OpenSSH')))
-    return pubkey_print[0], key_name
-    input()
-'''
+    # pubkey = key.publickey()
+    # pubkey_print = re.findall(r"b\'(.*)\'", str(pubkey.exportKey('OpenSSH')))
+    # return pubkey_print[0], key_name
+
 
 def del_host(lst, clear):
     if len(lst) == 0:
@@ -284,6 +293,7 @@ def del_host(lst, clear):
                     print()
                     print('Abort. Press Enter')
                     input()
+
 
 def backup_menu(lst, clear):
     make_table.from_list(lst, clear)

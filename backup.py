@@ -5,7 +5,6 @@ from time import strftime
 import json
 import encode
 import io_file
-import re
 
 
 def backup(lst, clear, path_to_file, path_to_key, home):
@@ -47,8 +46,8 @@ def backup_path(home, lst, clear):
 def restore(lst, clear, path_to_key, path_to_file, home, platform):
     make_table.from_list(lst, clear)
     print()
-    files = listdir(home)
-    ssmb_files = []
+#    files = listdir(home)
+#    ssmb_files = []
     '''for i in files:
         if i.endswith('.ssmb'):
             ssmb_files.append(i)
@@ -61,7 +60,7 @@ def restore(lst, clear, path_to_key, path_to_file, home, platform):
     '''
 
     print()
-    print('Enter path and filename to backup file(ssmb) or '
+    print('Enter path and filename to backup file(ssmb) or ')
     print('drag and drop the file into this window')
 
     path_for_backup = input('Path: ').strip()
