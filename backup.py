@@ -7,15 +7,15 @@ import encode
 import io_file
 
 
-def backup(lst, clear, path_to_file, path_to_key, home):
-    path_for_backup = backup_path(home, lst, clear)
+def backup(lst, clear, path_to_file, path_to_key, home, platform):
+    path_for_backup = backup_path(home, lst, clear, platform)
     if path_for_backup == '0':
         pass
     else:
         make_backup(lst, path_for_backup, path_to_key, path_to_file, clear)
 
 
-def backup_path(home, lst, clear):
+def backup_path(home, lst, clear, platform):
     make_table.from_list(lst, clear)
     print()
     print('Enter path when create backup or press Enter, 0 - back')
@@ -27,19 +27,21 @@ def backup_path(home, lst, clear):
     else:
         if path.exists(p) is True:
             if path.isdir(p) is True:
+                if platform == 'win':
+                    p = p.replace('\\', '\\\\')
                 return p
             else:
                 make_table.from_list(lst, clear)
                 print()
                 print('No path. Press Enter')
                 input()
-                p = backup_path(home, lst, clear)
+                p = backup_path(home, lst, clear, platform)
         else:
             make_table.from_list(lst, clear)
             print()
             print('No path. Press Enter')
             input()
-            p = backup_path(home, lst, clear)
+            p = backup_path(home, lst, clear, platform)
     return p
 
 
@@ -95,7 +97,7 @@ def restore(lst, clear, path_to_key, path_to_file, home, platform):
                 for row in i['key_entry']:
                     f.write(encode.decode(passwd, row))
                 f.close()
-#                chmod(f"{path_to_key}/{encode.decode(passwd, i['key'])}", 1130)
+                #  chmod(f"{path_to_key}/{encode.decode(passwd, i['key'])}", 1130)
                 system(f"chmod 600 {path_to_key}/{encode.decode(passwd, i['key'])}")
         io_file.save_file(path_to_file, lst, passwd)
         make_table.from_list(lst, clear)
@@ -118,7 +120,7 @@ def make_backup(lst, folder_for_backup, path_to_key, path_to_file, clear):
         j = {}
         for key, value in i.items():
             j[key] = encode.encode(passwd, value)
-        with open(f"{path_to_key}/{encode.decode(passwd, j['key'])}") as f:
+        with open(f"{path_to_key}{encode.decode(passwd, j['key'])}") as f:
             key_entry = f.readlines()
             f.close()
         key_encode = []
@@ -126,7 +128,8 @@ def make_backup(lst, folder_for_backup, path_to_key, path_to_file, clear):
             key_encode.append(encode.encode(passwd, k))
         j['key_entry'] = key_encode
         lst_encode.append(j)
-    file_backup = f'{folder_for_backup}/{strftime("%Y%m%d-%H%M%S")}.ssmb'
+
+    file_backup = f'{folder_for_backup}{strftime("%Y%m%d-%H%M%S")}.ssmb'
     with open(file_backup, 'w') as f:
         f.write(f"{encode.encode(passwd, passwd)}\n")
         for i in json.dumps(lst_encode):

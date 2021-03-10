@@ -4,7 +4,7 @@ from base64 import urlsafe_b64decode, urlsafe_b64encode
 def encode(key, symbols):
     enc = []
     enc.clear()
-    for i in range(len(str)):
+    for i in range(len(symbols)):
         key_c = key[i % len(key)]
         enc_c = chr((ord(symbols[i]) + ord(key_c)) % 256)
         enc.append(enc_c)
