@@ -69,7 +69,7 @@ def restore(lst, clear, path_to_key, path_to_file):
             lst.append(j)
             with open(f"{path_to_key}/{encode.decode(passwd, i['key'])}",'w') as f:
                 for r in i['key_entry']:
-                    f.write(r)
+                    f.write(encode.decode(passwd, r))
                 f.close()
                 #chmod(f"{path_to_key}/{encode.decode(passwd, i['key'])}", 1130)
                 system(f"chmod 600 {path_to_key}/{encode.decode(passwd, i['key'])}")
