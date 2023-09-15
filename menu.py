@@ -33,7 +33,7 @@ def check_input(ch, lst, clear):
                 print('Wrong number. Press Enter.')
                 input()
             else:
-                check = check_platform.check_platform()
+                check = check_platform.platfrom_params()
                 platform = check[5]
                 path_to_keys = check[4]
 
@@ -144,7 +144,7 @@ def add_key(lst, clear, host, port, user, comment):
     print('0 - Back to main menu')
     print()
     ch = input('You choice: ')
-    platform = check_platform.check_platform()
+    platform = check_platform.platfrom_params()
     path_to_keys = platform[4]
     path_to_file = platform[3]
     if bool(re.match(r"[gG]", ch)) is True:
@@ -271,7 +271,7 @@ def del_host(lst, clear):
                 print()
                 ch = input('Are you sure delete this record?(Yes/No): ')
                 if check_yes_no(ch) is True:
-                    platform = check_platform.check_platform()
+                    platform = check_platform.platfrom_params()
                     path_to_keys = platform[4]
                     path_to_file = platform[3]
                     paswrd = password.check_password(path_to_file, clear)
@@ -297,13 +297,13 @@ def backup_menu(lst, clear):
     if chb == '0':
         pass
     elif chb == '1':
-        platform = check_platform.check_platform()
+        platform = check_platform.platfrom_params()
         path_to_file = platform[3]
         path_to_key = platform[4]
         home = platform[6]
         backup.backup(lst, clear, path_to_file, path_to_key, home)
     elif chb == '2':
-        platform = check_platform.check_platform()
+        platform = check_platform.platfrom_params()
         path_to_file = platform[3]
         path_to_key = platform[4]
         backup.restore(lst, clear, path_to_key, path_to_file)

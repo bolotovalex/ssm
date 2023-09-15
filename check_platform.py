@@ -1,60 +1,33 @@
-from platform import system as ck
-from os import system, mkdir, path
-from sys import exit as exit_cmd
+from platform import system
+from os import system, mkdir, path, name
 
-def check_platform():
-    if ck() == 'Windows': #If platform Windows
-        print('This is Windows')
+def get_platfrom_params():
+    if name == 'nt': #If Windows
         platform = 'windows'
-        pass
-        clear_command = 'cls'
-        pip_v = 'pip'
-        home = path.expanduser("~")
-        home_local = home + str("\\.ssm\\")
-        check = system(f'cd {home_local}')
-        name_config = 'base.ssm'
-        path_to_config = home_local + name_config
-        path_to_keys = home_local + '.ssh\\'
-        if check == 1:
-            mkdir(home_local)
-            system(f'type nul > {home_local}\\base.ssm')
-            mkdir(path_to_keys)
-        else:
-            check = system(f'cd {path_to_keys}')
-            if check == 1:
-                mkdir(path_to_keys)
-            if path.exists(path_to_config) == False:
-                f = open(path_to_config, 'tw', encoding='utf-8')
-                f.close()
-        system(clear_command)
-        print('Windows not support for now.')
-        exit_cmd(0)
+        clear = system('cls')
+    else:
+        platform = 'unix'
+        clear = system('clear')
+    
+    home = path.expanduser("~")
+    home_local = path.join(home, ".ssm")
+    path_to_config = path.join(home_local, 'base.ssm')
+    path_to_keys = path.join(home_local, 'keys')
+    #1 Check ~/.ssm folder
+    
+    if path.exists(home_local) is False:
+        mkdir(home_local)
+    
+    #2 check ~/.ssh folder
+    if path.exists(path_to_keys) is False:
+        mkdir(path_to_keys)
 
-    else: #If platform not Windows
-        print('Detect unix system')
-        platform = 'linux'
-        home = path.expanduser('~')
-        home_local = home + '/.ssm/'
-        name_config = 'base.ssm'
-        path_to_config = home_local + name_config
-        path_to_keys = home + '/.ssh'
-        clear_command = 'clear'
-        pip_v = 'pip3'
+    #3 check ~/.ssm/base.ssm file
+    if path.exists(path_to_config) is False:
+        f = open(path_to_config, 'tw', encoding='utf-8')
+        f.close()
+    
+    return clear, path_to_config, path_to_keys, platform, home
 
-        #1 Check ~/.ssm folder
-        check_folder = path.exists(home_local) #Check ~/.config folder
-        if check_folder is False:
-            mkdir(home_local)
-
-        #2 check ~/.ssh folder
-        check_keys = path.exists(path_to_keys)  # Check ~/.ssh folder
-        if check_keys is False:
-            mkdir(path_to_keys)
-
-        #3 check ~/.ssm/base.ssm file
-        check_config = path.exists(path_to_config) #Check ~/.config/server.list file
-        if check_config is False:
-            f = open(path_to_config, 'tw', encoding='utf-8')
-            f.close()
-
-    return clear_command, pip_v, name_config, path_to_config, path_to_keys, platform, home
+   
+   

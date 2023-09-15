@@ -1,16 +1,11 @@
-import check_platform as ck
+from check_platform import get_platfrom_params
 import password
-import io_file
-import make_table
-import menu
+# import io_file
+# import make_table
+# import menu
 
 if __name__ == '__main__':
-    check_platform = ck.check_platform()
-    clear = check_platform[0]
-    pip = check_platform[1]
-    file_base = check_platform[2]
-    path_to_file = check_platform[3]
-    ssh_key_folder = check_platform[4]
+    clear, path_to_file, ssh_key_folder, platform, home = get_platfrom_params()
 
     # Check file and password
     with open(path_to_file) as f:
